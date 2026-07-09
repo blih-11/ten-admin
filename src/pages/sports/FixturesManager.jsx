@@ -119,24 +119,24 @@ export default function FixturesManager({ activeSite, sport }) {
       await getAPI(activeSite).delete(`/fixtures/${id}`)
       toast.success('Fixture deleted')
       fetchFixtures()
-    } catch (e) { toast.error('Failed to delete') }
+    } catch (e) { toast.error(e.response?.data?.message || 'Failed to delete') }
   }
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-start justify-between mb-4 gap-3 flex-wrap">
         <div>
           <label className="text-gray-400 text-xs uppercase tracking-widest block mb-1.5">Competition</label>
           <select
             value={leagueId}
             onChange={e => { setLeagueId(e.target.value); setShowForm(false); setEditingId(null); setForm(emptyForm()) }}
-            className="bg-gray-700 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm outline-none focus:border-yellow-400 min-w-[220px]"
+            className="bg-gray-700 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm outline-none focus:border-yellow-400 w-full sm:min-w-[220px] sm:w-auto"
           >
             <option value="">Select a competition...</option>
             {leagues.map(l => <option key={l._id} value={l._id}>{l.name}</option>)}
           </select>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           <Button variant="secondary" disabled={!leagueId} onClick={() => setShowBulkImport(v => !v)}>
             <MdUploadFile size={16} /> Bulk Import
           </Button>
@@ -158,7 +158,7 @@ export default function FixturesManager({ activeSite, sport }) {
 
       {showForm && (
         <form onSubmit={handleSubmit} className="bg-gray-800 rounded-xl p-5 mb-5 space-y-4">
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label className="text-gray-400 text-xs uppercase tracking-widest block mb-1.5">Home team</label>
               <select value={form.homeTeamId} onChange={e => pickTeam('home', e.target.value)}
@@ -186,7 +186,7 @@ export default function FixturesManager({ activeSite, sport }) {
             </div>
           </div>
 
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div>
               <label className="text-gray-400 text-xs uppercase tracking-widest block mb-1.5">Kickoff date/time</label>
               <input type="datetime-local" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
@@ -224,7 +224,7 @@ export default function FixturesManager({ activeSite, sport }) {
             </div>
             <div className="space-y-2">
               {form.events.map((ev, i) => (
-                <div key={i} className="flex items-center gap-2 bg-gray-700/50 rounded-lg p-2">
+                <div key={i} className="flex items-center gap-2 bg-gray-700/50 rounded-lg p-2 flex-wrap">
                   <input type="number" value={ev.minute} onChange={e => updateEvent(i, { minute: e.target.value })} placeholder="Min"
                     className="w-16 bg-gray-700 text-white border border-gray-600 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-yellow-400" />
                   <select value={ev.type} onChange={e => updateEvent(i, { type: e.target.value })}

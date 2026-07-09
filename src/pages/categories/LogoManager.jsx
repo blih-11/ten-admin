@@ -135,7 +135,7 @@ export default function LogoManager() {
       {loading ? (
         <div className="p-8 text-center text-gray-500">Loading...</div>
       ) : (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-gray-800 rounded-xl overflow-hidden">
             <div className="p-4 border-b border-gray-700">
               <h3 className="text-white font-semibold text-sm">Competitions & Leagues ({filteredLeagues.length})</h3>

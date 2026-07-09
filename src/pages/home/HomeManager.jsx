@@ -164,12 +164,12 @@ export default function HomeManager() {
       await getAPI(activeSite).delete(`/articles/${id}`)
       toast.success('Article deleted')
       fetchLayout()
-    } catch (e) { toast.error('Failed to delete') }
+    } catch (e) { toast.error(e.response?.data?.message || 'Failed to delete') }
   }
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
         <div>
           <h1 className="text-white text-2xl font-bold">Home Page</h1>
           <p className="text-gray-500 text-sm mt-1">Control which articles appear as the hero, side news, and latest news on the homepage.</p>
@@ -218,7 +218,7 @@ export default function HomeManager() {
               <>
                 <div className="divide-y divide-gray-700">
                   {layout.latestNews.map(a => (
-                    <div key={a._id} className="flex items-center gap-3 px-5 py-3 hover:bg-gray-750">
+                    <div key={a._id} className="flex items-center gap-3 px-5 py-3 hover:bg-gray-750 flex-wrap">
                       <div className="w-10 h-10 rounded-lg bg-gray-700 overflow-hidden shrink-0 flex items-center justify-center">
                         {a.featuredImage?.url
                           ? <img src={a.featuredImage.url} alt="" className="w-full h-full object-cover" />
@@ -228,7 +228,7 @@ export default function HomeManager() {
                         <div className="text-white text-sm font-medium line-clamp-1">{a.title}</div>
                         <div className="text-gray-500 text-xs">{truncate(a.excerpt, 70)}</div>
                       </div>
-                      <div className="flex gap-1.5 shrink-0">
+                      <div className="flex gap-1.5 shrink-0 flex-wrap">
                         <Button variant="secondary" size="sm" onClick={() => assign(a._id, 'hero')}>
                           <MdStar size={12} /> Hero
                         </Button>

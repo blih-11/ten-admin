@@ -97,7 +97,7 @@ export default function TableManager({ activeSite, sport }) {
       await getAPI(activeSite).delete(`/standings/${id}`)
       toast.success('Row removed')
       fetchStandings()
-    } catch (e) { toast.error('Failed to delete') }
+    } catch (e) { toast.error(e.response?.data?.message || 'Failed to delete') }
   }
 
   const field = (key, label, type = 'text', width = '') => (

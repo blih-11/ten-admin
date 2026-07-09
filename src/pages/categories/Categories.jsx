@@ -5,6 +5,7 @@ import Button from '../../components/ui/Button'
 import toast from 'react-hot-toast'
 import { MdAdd, MdEdit, MdDelete, MdCheck, MdClose } from 'react-icons/md'
 import LogoManager from './LogoManager'
+import LogoLibrary from './LogoLibrary'
 
 export default function Categories() {
   const { activeSite } = useAuth()
@@ -51,7 +52,7 @@ export default function Categories() {
       await getAPI(activeSite).delete(`/categories/${id}`)
       toast.success('Category deleted')
       fetchCategories()
-    } catch (e) { toast.error('Failed to delete') }
+    } catch (e) { toast.error(e.response?.data?.message || 'Failed to delete') }
   }
 
   // Sports categories preset
@@ -61,10 +62,10 @@ export default function Categories() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
         <h1 className="text-white text-2xl font-bold">Categories</h1>
         <div className="flex gap-1 bg-gray-900 p-1 rounded-lg">
-          {[{ key: 'categories', label: 'Categories' }, { key: 'logos', label: 'Logo Manager' }].map(t => (
+          {[{ key: 'categories', label: 'Categories' }, { key: 'logos', label: 'Logo Manager' }, { key: 'library', label: 'Logo Names' }].map(t => (
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
@@ -78,8 +79,8 @@ export default function Categories() {
         </div>
       </div>
 
-      {tab === 'logos' ? <LogoManager /> : (
-      <div className="grid grid-cols-2 gap-6">
+      {tab === 'logos' ? <LogoManager /> : tab === 'library' ? <LogoLibrary /> : (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Form */}
         <div className="bg-gray-800 rounded-xl p-5">
           <h2 className="text-white font-semibold mb-4">{editing ? 'Edit Category' : 'Add Category'}</h2>
@@ -158,13 +159,13 @@ export default function Categories() {
           ) : (
             <div className="divide-y divide-gray-700">
               {categories.map(cat => (
-                <div key={cat._id} className="flex items-center justify-between px-5 py-3 hover:bg-gray-750">
-                  <div>
-                    <div className="text-white text-sm font-medium">{cat.name}</div>
-                    {cat.parent && <div className="text-gray-500 text-xs">Under: {cat.parent}</div>}
-                    <div className="text-gray-600 text-xs font-mono">/{cat.slug}</div>
+                <div key={cat._id} className="flex items-center justify-between gap-2 px-5 py-3 hover:bg-gray-750">
+                  <div className="min-w-0">
+                    <div className="text-white text-sm font-medium truncate">{cat.name}</div>
+                    {cat.parent && <div className="text-gray-500 text-xs truncate">Under: {cat.parent}</div>}
+                    <div className="text-gray-600 text-xs font-mono truncate">/{cat.slug}</div>
                   </div>
-                  <div className="flex gap-1">
+                  <div className="flex gap-1 shrink-0">
                     <Button variant="ghost" size="sm" onClick={() => handleEdit(cat)}><MdEdit size={14} /></Button>
                     <Button variant="ghost" size="sm" onClick={() => handleDelete(cat._id)} className="hover:text-red-400"><MdDelete size={14} /></Button>
                   </div>

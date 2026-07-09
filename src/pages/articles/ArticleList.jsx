@@ -37,7 +37,7 @@ export default function ArticleList() {
       await getAPI(activeSite).delete(`/articles/${id}`)
       toast.success('Article deleted')
       fetchArticles()
-    } catch (e) { toast.error('Failed to delete') }
+    } catch (e) { toast.error(e.response?.data?.message || 'Failed to delete') }
   }
 
   const filtered = search
@@ -85,7 +85,8 @@ export default function ArticleList() {
           <div className="p-8 text-center text-gray-500">No articles found</div>
         ) : (
           <>
-            <table className="w-full">
+            <div className="overflow-x-auto">
+            <table className="w-full min-w-[900px]">
               <thead className="bg-gray-900">
                 <tr>
                   {['Title', 'Teams', 'Category', 'Status', 'Views', 'Date', 'Actions'].map(h => (
@@ -125,6 +126,7 @@ export default function ArticleList() {
                 ))}
               </tbody>
             </table>
+            </div>
             {/* Pagination */}
             <div className="flex items-center justify-between p-4 border-t border-gray-700">
               <span className="text-gray-500 text-sm">Page {page} of {totalPages}</span>

@@ -65,7 +65,7 @@ function SportEditor({ sport, onSave, onCancel }) {
         <label className="text-gray-400 text-xs uppercase tracking-widest block mb-2">Sub-nav (shown under this sport)</label>
         <div className="space-y-2">
           {form.subnav.map((s, i) => (
-            <div key={i} className="flex items-center gap-2 bg-gray-750 bg-gray-700/50 rounded-lg p-2">
+            <div key={i} className="flex items-center gap-2 bg-gray-750 bg-gray-700/50 rounded-lg p-2 flex-wrap">
               <div className="flex flex-col">
                 <button type="button" onClick={() => moveSub(i, -1)} disabled={i === 0} className="text-gray-500 hover:text-white disabled:opacity-30">
                   <MdArrowUpward size={12} />
@@ -78,16 +78,16 @@ function SportEditor({ sport, onSave, onCancel }) {
                 value={s.label}
                 onChange={e => updateSub(i, { label: e.target.value })}
                 placeholder="Tab label"
-                className="flex-1 bg-gray-700 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm outline-none focus:border-yellow-400"
+                className="flex-1 min-w-[120px] bg-gray-700 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm outline-none focus:border-yellow-400"
               />
               <select
                 value={s.tab}
                 onChange={e => updateSub(i, { tab: e.target.value })}
-                className="bg-gray-700 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm outline-none focus:border-yellow-400"
+                className="shrink-0 bg-gray-700 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm outline-none focus:border-yellow-400"
               >
                 {TAB_OPTIONS.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
               </select>
-              <Button type="button" variant="ghost" size="sm" onClick={() => removeSub(i)} className="hover:text-red-400">
+              <Button type="button" variant="ghost" size="sm" onClick={() => removeSub(i)} className="hover:text-red-400 shrink-0">
                 <MdDelete size={14} />
               </Button>
             </div>
@@ -155,7 +155,7 @@ export default function NavManager() {
       await getAPI(activeSite).delete(`/nav-items/${id}`)
       toast.success('Removed from nav')
       fetchItems()
-    } catch (e) { toast.error('Failed to delete') }
+    } catch (e) { toast.error(e.response?.data?.message || 'Failed to delete') }
   }
 
   const toggleActive = async (item) => {

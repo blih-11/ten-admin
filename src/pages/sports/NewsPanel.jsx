@@ -53,7 +53,7 @@ export default function NewsPanel({ activeSite, sport, transfersOnly = false }) 
       await getAPI(activeSite).delete(`/articles/${id}`)
       toast.success('Article deleted')
       fetchArticles()
-    } catch (e) { toast.error('Failed to delete') }
+    } catch (e) { toast.error(e.response?.data?.message || 'Failed to delete') }
   }
 
   return (

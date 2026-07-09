@@ -52,7 +52,7 @@ export default function CompetitionsManager({ activeSite, sport }) {
       await getAPI(activeSite).delete(`/leagues/${id}`)
       toast.success('Competition deleted')
       fetchLeagues()
-    } catch (e) { toast.error('Failed to delete') }
+    } catch (e) { toast.error(e.response?.data?.message || 'Failed to delete') }
   }
 
   const handleSync = async (id) => {
@@ -115,15 +115,15 @@ export default function CompetitionsManager({ activeSite, sport }) {
         ) : (
           <div className="divide-y divide-gray-700">
             {leagues.map(l => (
-              <div key={l._id} className={`flex items-center justify-between px-5 py-3 hover:bg-gray-750 ${!l.isActive ? 'opacity-50' : ''}`}>
-                <div className="flex items-center gap-3">
-                  {l.logo && <img src={l.logo} alt="" className="w-6 h-6 object-contain" />}
-                  <div>
-                    <div className="text-white text-sm font-medium">{l.name}</div>
-                    <div className="text-gray-500 text-xs">{l.country} · {l.season} · {l.isManual ? 'Manual' : 'API-synced'}</div>
+              <div key={l._id} className={`flex items-center justify-between gap-2 px-5 py-3 hover:bg-gray-750 ${!l.isActive ? 'opacity-50' : ''}`}>
+                <div className="flex items-center gap-3 min-w-0">
+                  {l.logo && <img src={l.logo} alt="" className="w-6 h-6 object-contain shrink-0" />}
+                  <div className="min-w-0">
+                    <div className="text-white text-sm font-medium truncate">{l.name}</div>
+                    <div className="text-gray-500 text-xs truncate">{l.country} · {l.season} · {l.isManual ? 'Manual' : 'API-synced'}</div>
                   </div>
                 </div>
-                <div className="flex gap-1">
+                <div className="flex gap-1 shrink-0">
                   {!l.isManual && (
                     <Button variant="ghost" size="sm" onClick={() => handleSync(l._id)} title="Sync now"><MdSync size={14} /></Button>
                   )}

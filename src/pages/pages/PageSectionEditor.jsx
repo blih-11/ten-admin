@@ -200,7 +200,7 @@ export default function PageSectionEditor() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-start justify-between mb-6 gap-3 flex-wrap">
         <div className="flex items-center gap-3">
           <Link to="/pages"><Button variant="ghost" size="sm"><MdArrowBack size={16} /> Back</Button></Link>
           <h1 className="text-white text-xl font-bold">{PAGE_NAMES[page] || page} — Content</h1>
@@ -212,7 +212,7 @@ export default function PageSectionEditor() {
       </div>
 
       {showAdd && (
-        <div className="bg-gray-800 border border-yellow-400/30 rounded-xl p-5 mb-6 grid grid-cols-5 gap-3 items-end">
+        <div className="bg-gray-800 border border-yellow-400/30 rounded-xl p-5 mb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
           <div>
             <label className="text-gray-400 text-xs uppercase tracking-widest block mb-1">Field Key</label>
             <input value={newField.sectionKey} onChange={e => setNewField(f => ({ ...f, sectionKey: e.target.value.replace(/\s+/g, '_') }))}

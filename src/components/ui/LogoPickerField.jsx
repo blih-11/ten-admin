@@ -1,20 +1,10 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { getAPI } from '../../utils/api'
 import toast from 'react-hot-toast'
 import { MdSearch, MdImage, MdClose } from 'react-icons/md'
 import { TEAM_LOGOS, COMPETITION_LOGOS } from '../../data/logos'
-
-// Turns { "manchester united": "/logos/teams/manchester-united.svg", ... }
-// into a sorted [{ name, path }] list once per module load.
-function toSortedList(map) {
-  return Object.entries(map)
-    .map(([name, path]) => ({ name, path }))
-    .sort((a, b) => a.name.localeCompare(b.name))
-}
-
-const TEAM_LIST = toSortedList(TEAM_LOGOS)
-const COMPETITION_LIST = toSortedList(COMPETITION_LOGOS)
+import { toOverrideMap, mergeLogoList } from '../../utils/logoAliases'
 
 // kind: 'team' | 'competition'
 // value: current logo path stored on the form
@@ -25,9 +15,18 @@ export default function LogoPickerField({ kind, value, onChange, nameHint = '' }
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [uploading, setUploading] = useState(false)
+  const [overrides, setOverrides] = useState([])
   const ref = useRef(null)
 
-  const list = kind === 'team' ? TEAM_LIST : COMPETITION_LIST
+  useEffect(() => {
+    getAPI('sports').get('/logo-aliases').then(res => setOverrides(res.data.data || [])).catch(() => {})
+  }, [])
+
+  const overrideMap = useMemo(() => toOverrideMap(overrides), [overrides])
+  const list = useMemo(
+    () => mergeLogoList(kind === 'team' ? TEAM_LOGOS : COMPETITION_LOGOS, kind, overrideMap),
+    [kind, overrideMap]
+  )
 
   useEffect(() => {
     const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false) }
@@ -40,7 +39,7 @@ export default function LogoPickerField({ kind, value, onChange, nameHint = '' }
     setOpen(true)
   }
 
-  const filtered = list.filter(item => item.name.includes(search.toLowerCase()))
+  const filtered = list.filter(item => item.searchText.includes(search.toLowerCase()))
 
   const handleUpload = async (file) => {
     if (!file) return
@@ -104,7 +103,7 @@ export default function LogoPickerField({ kind, value, onChange, nameHint = '' }
                 className="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-gray-800 text-left"
               >
                 <img src={item.path} alt="" className="w-5 h-5 object-contain shrink-0" />
-                <span className="text-gray-300 text-xs capitalize truncate">{item.name}</span>
+                <span className="text-gray-300 text-xs truncate">{item.displayName}</span>
               </button>
             ))}
           </div>

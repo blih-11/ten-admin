@@ -63,7 +63,7 @@ export default function Team() {
       {showForm && (
         <div className="bg-gray-800 rounded-xl p-5 mb-6">
           <h2 className="text-white font-semibold mb-4">New Team Member</h2>
-          <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               { label: 'Full Name', key: 'name', type: 'text', placeholder: 'John Doe' },
               { label: 'Email', key: 'email', type: 'email', placeholder: 'john@tensports.com' },
@@ -93,7 +93,7 @@ export default function Team() {
                 <option value="admin">Admin</option>
               </select>
             </div>
-            <div className="col-span-2 flex gap-2">
+            <div className="col-span-1 sm:col-span-2 flex gap-2">
               <Button type="submit" disabled={loading}>{loading ? 'Adding...' : 'Add Member'}</Button>
               <Button type="button" variant="secondary" onClick={() => setShowForm(false)}>Cancel</Button>
             </div>
@@ -101,21 +101,21 @@ export default function Team() {
         </div>
       )}
 
-      <div className="bg-gray-800 rounded-xl overflow-hidden">
-        <table className="w-full">
+      <div className="bg-gray-800 rounded-xl overflow-hidden overflow-x-auto">
+        <table className="w-full min-w-[640px]">
           <thead className="bg-gray-900">
             <tr>
               {['Member', 'Role', 'Status', 'Joined', 'Actions'].map(h => (
-                <th key={h} className="text-left text-gray-500 text-xs uppercase tracking-widest px-5 py-3">{h}</th>
+                <th key={h} className="text-left text-gray-500 text-xs uppercase tracking-widest px-3 sm:px-5 py-3">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {team.map(member => (
               <tr key={member._id} className="border-t border-gray-700">
-                <td className="px-5 py-4">
+                <td className="px-3 sm:px-5 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-white text-sm font-bold">
+                    <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-white text-sm font-bold shrink-0">
                       {member.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -124,7 +124,7 @@ export default function Team() {
                     </div>
                   </div>
                 </td>
-                <td className="px-5 py-4">
+                <td className="px-3 sm:px-5 py-4">
                   <select
                     value={member.role}
                     onChange={e => handleRoleChange(member._id, e.target.value)}
@@ -135,13 +135,13 @@ export default function Team() {
                     <option value="admin">Admin</option>
                   </select>
                 </td>
-                <td className="px-5 py-4">
+                <td className="px-3 sm:px-5 py-4">
                   <span className={`px-2 py-0.5 rounded text-xs font-semibold ${member.isActive ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
                     {member.isActive ? 'Active' : 'Inactive'}
                   </span>
                 </td>
-                <td className="px-5 py-4 text-gray-500 text-xs">{formatDate(member.createdAt)}</td>
-                <td className="px-5 py-4">
+                <td className="px-3 sm:px-5 py-4 text-gray-500 text-xs whitespace-nowrap">{formatDate(member.createdAt)}</td>
+                <td className="px-3 sm:px-5 py-4">
                   <Button variant="ghost" size="sm" onClick={() => handleDeactivate(member._id)} className="hover:text-red-400">
                     <MdPersonOff size={14} />
                   </Button>

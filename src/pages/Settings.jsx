@@ -74,7 +74,7 @@ function DangerZone() {
         Competitions themselves are never deleted here -- only the data under them. This cannot be undone.
       </p>
 
-      <div className="grid grid-cols-3 gap-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
         <div>
           <label className="text-gray-400 text-xs uppercase tracking-widest block mb-1.5">Scope</label>
           <select value={scope} onChange={e => setScope(e.target.value)}
@@ -120,12 +120,12 @@ function DangerZone() {
 
       <p className="text-yellow-500 text-xs mb-3">This will affect: <strong>{scopeLabel}</strong></p>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 flex-wrap">
         <input
           value={confirmText}
           onChange={e => setConfirmText(e.target.value)}
           placeholder='Type "RESET" to confirm'
-          className="bg-gray-900 text-white border border-red-500/50 rounded-lg px-3 py-2 text-sm outline-none focus:border-red-400 w-56"
+          className="bg-gray-900 text-white border border-red-500/50 rounded-lg px-3 py-2 text-sm outline-none focus:border-red-400 w-full sm:w-56"
         />
         <Button
           onClick={handleReset}
@@ -144,7 +144,7 @@ export default function Settings() {
   return (
     <div>
       <h1 className="text-white text-2xl font-bold mb-6">Settings</h1>
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-gray-800 rounded-xl p-5 space-y-4">
           <h2 className="text-white font-semibold border-b border-gray-700 pb-3">Account</h2>
           <div>

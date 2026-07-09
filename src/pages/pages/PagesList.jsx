@@ -32,7 +32,7 @@ export default function PagesList() {
         <p className="text-gray-500 text-sm mt-1">Pick a page to edit its content -- every field on the live site is listed and editable here.</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {PAGES.map(page => (
           <Link
             key={page.slug}

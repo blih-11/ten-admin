@@ -120,7 +120,7 @@ export default function TeamsManager({ activeSite, sport }) {
       await getAPI(activeSite).delete(`/teams/${id}`)
       toast.success('Team deleted')
       refreshAll()
-    } catch (e) { toast.error('Failed to delete') }
+    } catch (e) { toast.error(e.response?.data?.message || 'Failed to delete') }
   }
 
   // Pulls a team off this league+season's roster. The team itself, and its
@@ -219,7 +219,7 @@ export default function TeamsManager({ activeSite, sport }) {
                   className="w-full bg-gray-700 text-white border border-gray-600 rounded-lg px-3 py-2 text-sm outline-none focus:border-yellow-400" />
               </div>
               <LogoPickerField kind="team" value={form.logo} onChange={logo => setForm(f => ({ ...f, logo }))} nameHint={form.name} />
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-gray-400 text-xs uppercase tracking-widest block mb-1.5">Country</label>
                   <input value={form.country} onChange={e => setForm(f => ({ ...f, country: e.target.value }))}
@@ -306,15 +306,15 @@ export default function TeamsManager({ activeSite, sport }) {
           ) : (
             <div className="divide-y divide-gray-700">
               {roster.map(t => (
-                <div key={t._id} className="flex items-center justify-between px-5 py-3 hover:bg-gray-750">
-                  <div className="flex items-center gap-3">
-                    {t.logo && <img src={t.logo} alt="" className="w-6 h-6 object-contain" />}
-                    <div>
-                      <div className="text-white text-sm font-medium">{t.name}</div>
-                      <div className="text-gray-500 text-xs">{t.stadium || '—'} {t.founded ? `· est. ${t.founded}` : ''}</div>
+                <div key={t._id} className="flex items-center justify-between gap-2 px-5 py-3 hover:bg-gray-750">
+                  <div className="flex items-center gap-3 min-w-0">
+                    {t.logo && <img src={t.logo} alt="" className="w-6 h-6 object-contain shrink-0" />}
+                    <div className="min-w-0">
+                      <div className="text-white text-sm font-medium truncate">{t.name}</div>
+                      <div className="text-gray-500 text-xs truncate">{t.stadium || '—'} {t.founded ? `· est. ${t.founded}` : ''}</div>
                     </div>
                   </div>
-                  <div className="flex gap-1">
+                  <div className="flex gap-1 shrink-0">
                     <Button variant="ghost" size="sm" onClick={() => handleEdit(t)} title="Edit team details"><MdEdit size={14} /></Button>
                     <Button variant="ghost" size="sm" onClick={() => handleUnassign(t)} title={`Remove from ${seasonLabel(season)} (keeps the team)`}><MdLinkOff size={14} /></Button>
                     <Button variant="ghost" size="sm" onClick={() => handleDelete(t._id)} className="hover:text-red-400" title="Delete team permanently"><MdDelete size={14} /></Button>

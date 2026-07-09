@@ -157,7 +157,7 @@ export default function ArticleEditor() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-start justify-between mb-6 gap-3 flex-wrap">
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="sm" onClick={() => navigate('/articles')}><MdArrowBack size={16} /> Back</Button>
           <h1 className="text-white text-xl font-bold">{isEdit ? 'Edit Article' : 'New Article'}</h1>
@@ -168,9 +168,9 @@ export default function ArticleEditor() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main editor */}
-        <div className="col-span-2 space-y-4">
+        <div className="lg:col-span-2 space-y-4">
           <input
             value={form.title}
             onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
